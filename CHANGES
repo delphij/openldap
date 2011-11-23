@@ -1,15 +1,17 @@
 OpenLDAP 2.4 Change Log
 
-OpenLDAP 2.4.27 Engineering
+OpenLDAP 2.4.27 Release (2011/11/24)
 	Added libldap support for draft-wahl-ldap-session (ITS#6984)
 	Added slapd support for draft-wahl-ldap-session (ITS#6984)
 	Added slapadd pipelining capability (ITS#7078)
 	Added slapd Add-if-not-present (ITS#6561)
 	Added slapd delta-syncrepl MMR (ITS#6734,ITS#7029,ITS#7031)
 	Added slapd-mdb experimental backend (ITS#7079)
-	Added slapd-passwd dyanmic config support
+	Added slapd-passwd dynamic config support
+	Added slapd-perl dynamic config support
 	Added slapd-shell dynamic config support
 	Added slapd-sock support as an overlay (ITS#6666)
+	Added slapd-sql dynamic config support
 	Added contrib/passwd APR1 support (ITS#6826)
 	Fixed slapi linking on AIX (ITS#3272)
 	Fixed ldapmodify crash with LDIF controls (ITS#7039)
@@ -35,6 +37,7 @@ OpenLDAP 2.4.27 Engineering
 	Fixed slapd schema UTF8StringNormalize with 0 length values (ITS#7059)
 	Fixed slapd with dynamic acls for cn=config (ITS#7066)
 	Fixed slapd response callbacks (ITS#6059,ITS#7062)
+	Fixed slapd no_connection warnings with ldapi (ITS#6548,ITS#7092)
 	Fixed slapd return code processing (ITS#7060)
 	Fixed slapd sl_malloc various issues (ITS#6437)
 	Fixed slapd startup behavior (ITS#6848)
@@ -58,6 +61,7 @@ OpenLDAP 2.4.27 Engineering
 	Fixed slapo-sssvlv to only return requested attrs (ITS#7061)
 	Fixed slapo-syncprov DSA attribute filtering for Persist mode (ITS#7019)
 	Fixed slapo-syncprov when consumer has newer state of our SID (ITS#7040)
+	Fixed slapo-syncprov crash (ITS#7025)
 	Fixed slapo-unique URI checking of "host" portion (ITS#7018)
 	Fixed contrib/autogroup double-free (ITS#6972)
 	Fixed contrib/smbk5pwd cn=config deletion of bitmasks (ITS#7083)

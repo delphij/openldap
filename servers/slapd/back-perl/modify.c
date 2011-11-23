@@ -27,10 +27,7 @@ perl_back_modify(
 	int count;
 	int i;
 
-#if defined(HAVE_WIN32_ASPERL) || defined(USE_ITHREADS)
 	PERL_SET_CONTEXT( PERL_INTERPRETER );
-#endif
-
 	ldap_pvt_thread_mutex_lock( &perl_interpreter_mutex );	
 
 	{
@@ -75,11 +72,7 @@ perl_back_modify(
 
 		PUTBACK;
 
-#ifdef PERL_IS_5_6
 		count = call_method("modify", G_SCALAR);
-#else
-		count = perl_call_method("modify", G_SCALAR);
-#endif
 
 		SPAGAIN;
 

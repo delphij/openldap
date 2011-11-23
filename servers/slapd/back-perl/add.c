@@ -26,9 +26,7 @@ perl_back_add(
 	int len;
 	int count;
 
-#if defined(HAVE_WIN32_ASPERL) || defined(USE_ITHREADS)
 	PERL_SET_CONTEXT( PERL_INTERPRETER );
-#endif
 	ldap_pvt_thread_mutex_lock( &perl_interpreter_mutex );
 	ldap_pvt_thread_mutex_lock( &entry2str_mutex );
 
@@ -41,11 +39,7 @@ perl_back_add(
 
 		PUTBACK;
 
-#ifdef PERL_IS_5_6
 		count = call_method("add", G_SCALAR);
-#else
-		count = perl_call_method("add", G_SCALAR);
-#endif
 
 		SPAGAIN;
 

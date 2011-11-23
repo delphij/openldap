@@ -25,9 +25,7 @@ perl_back_delete(
 	PerlBackend *perl_back = (PerlBackend *) op->o_bd->be_private;
 	int count;
 
-#if defined(HAVE_WIN32_ASPERL) || defined(USE_ITHREADS)
 	PERL_SET_CONTEXT( PERL_INTERPRETER );
-#endif
 	ldap_pvt_thread_mutex_lock( &perl_interpreter_mutex );	
 
 	{
@@ -39,11 +37,7 @@ perl_back_delete(
 
 		PUTBACK;
 
-#ifdef PERL_IS_5_6
 		count = call_method("delete", G_SCALAR);
-#else
-		count = perl_call_method("delete", G_SCALAR);
-#endif
 
 		SPAGAIN;
 

@@ -37,6 +37,7 @@ extern BI_op_modrdn	perl_back_modrdn;
 extern BI_op_add	perl_back_add;
 extern BI_op_delete	perl_back_delete;
 
+extern int perl_back_init_cf( BackendInfo *bi );
 LDAP_END_DECL
 
 #endif /* PROTO_PERL_H */

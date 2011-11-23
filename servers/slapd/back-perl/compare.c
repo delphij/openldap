@@ -41,9 +41,7 @@ perl_back_compare(
 		op->orc_ava->aa_desc->ad_cname.bv_val ), "=" ),
 		op->orc_ava->aa_value.bv_val );
 
-#if defined(HAVE_WIN32_ASPERL) || defined(USE_ITHREADS)
 	PERL_SET_CONTEXT( PERL_INTERPRETER );
-#endif
 	ldap_pvt_thread_mutex_lock( &perl_interpreter_mutex );	
 
 	{
@@ -55,11 +53,7 @@ perl_back_compare(
 		XPUSHs(sv_2mortal(newSVpv( avastr , 0)));
 		PUTBACK;
 
-#ifdef PERL_IS_5_6
 		count = call_method("compare", G_SCALAR);
-#else
-		count = perl_call_method("compare", G_SCALAR);
-#endif
 
 		SPAGAIN;
 

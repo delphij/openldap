@@ -241,7 +241,7 @@ main( int argc, char **argv )
 {
 	char		*rbuf = NULL, *rejbuf = NULL;
 	FILE		*rejfp;
-	struct LDIFFP *ldiffp, ldifdummy = {0};
+	struct LDIFFP *ldiffp = NULL, ldifdummy = {0};
 	char		*matched_msg, *error_msg;
 	int		rc, retval, ldifrc;
 	int		len;
@@ -263,7 +263,8 @@ main( int argc, char **argv )
 	if ( rejfile != NULL ) {
 		if (( rejfp = fopen( rejfile, "w" )) == NULL ) {
 			perror( rejfile );
-			return( EXIT_FAILURE );
+			retval = EXIT_FAILURE;
+			goto fail;
 		}
 	} else {
 		rejfp = NULL;
@@ -272,7 +273,8 @@ main( int argc, char **argv )
 	if ( infile != NULL ) {
 		if (( ldiffp = ldif_open( infile, "r" )) == NULL ) {
 			perror( infile );
-			return( EXIT_FAILURE );
+			retval = EXIT_FAILURE;
+			goto fail;
 		}
 	} else {
 		ldifdummy.fp = stdin;
@@ -293,7 +295,10 @@ main( int argc, char **argv )
 		rc = ldap_txn_start_s( ld, NULL, NULL, &txn_id );
 		if( rc != LDAP_SUCCESS ) {
 			tool_perror( "ldap_txn_start_s", rc, NULL, NULL, NULL, NULL );
-			if( txn > 1 ) return EXIT_FAILURE;
+			if( txn > 1 ) {
+				retval = EXIT_FAILURE;
+				goto fail;
+			}
 			txn = 0;
 		}
 	}
@@ -327,7 +332,8 @@ main( int argc, char **argv )
 			len = strlen( rbuf );
 			if (( rejbuf = (char *)ber_memalloc( len+1 )) == NULL ) {
 				perror( "malloc" );
-				exit( EXIT_FAILURE );
+				retval = EXIT_FAILURE;
+				goto fail;
 			}
 			memcpy( rejbuf, rbuf, len+1 );
 		}
@@ -382,16 +388,16 @@ main( int argc, char **argv )
 	}
 #endif
 
-	if ( !dont ) {
-		tool_unbind( ld );
-	}
-
+fail:;
 	if ( rejfp != NULL ) {
 		fclose( rejfp );
 	}
 
-	tool_destroy();
-	return( retval );
+	if ( ldiffp != NULL && ldiffp != &ldifdummy ) {
+		ldif_close( ldiffp );
+	}
+
+	tool_exit( ld, retval );
 }
 
 
